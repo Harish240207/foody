@@ -94,15 +94,20 @@ export default function UserLogin() {
 
         if (address) localStorage.setItem("userArea", address);
       } else {
-        const res = await axios.post(
-          "http://localhost:5000/api/user-login",
-          { phone }
-        );
+  const res = await axios.post(
+    "http://localhost:5000/api/user-login",
+    { phone }
+  );
 
-        if (res.data.address) {
-          localStorage.setItem("userArea", res.data.address);
-        }
-      }
+  // ✅ STORE FULL USER OBJECT (IMPORTANT)
+  localStorage.setItem("user", JSON.stringify(res.data));
+
+  if (res.data.address) {
+    localStorage.setItem("userArea", res.data.address);
+  }
+
+  localStorage.setItem("userPhone", res.data.phone);
+}
 
       localStorage.setItem("userPhone", phone);
       navigate("/explore");
@@ -124,10 +129,14 @@ export default function UserLogin() {
         { email, password }
       );
 
-      localStorage.setItem("userPhone", res.data.phone);
-      if (res.data.address) {
-        localStorage.setItem("userArea", res.data.address);
-      }
+      // ✅ STORE FULL USER OBJECT (IMPORTANT)
+localStorage.setItem("user", JSON.stringify(res.data));
+
+localStorage.setItem("userPhone", res.data.phone);
+
+if (res.data.address) {
+  localStorage.setItem("userArea", res.data.address);
+}
 
       navigate("/explore");
     } catch (err) {

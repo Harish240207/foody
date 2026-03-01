@@ -29,13 +29,17 @@ export default function Explore() {
   const navigate = useNavigate();
 
   const userPhone = localStorage.getItem("userPhone");
-  const userLat = parseFloat(localStorage.getItem("lat"));
-  const userLng = parseFloat(localStorage.getItem("lng"));
+  const userLat = Number(localStorage.getItem("lat"));
+  const userLng = Number(localStorage.getItem("lng"));
+
+  const hasValidUserLocation =
+    !isNaN(userLat) &&
+    !isNaN(userLng);
+    
   const userArea = localStorage.getItem("userArea");
 
   const [hotels, setHotels] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState("list");
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
 
@@ -44,18 +48,25 @@ export default function Explore() {
   }, [userPhone, navigate]);
 
   const getDistance = (lat1, lon1, lat2, lon2) => {
-    const R = 6371;
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
+  if (
+    isNaN(lat1) ||
+    isNaN(lon1) ||
+    isNaN(lat2) ||
+    isNaN(lon2)
+  ) return 999;
 
-    const a =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) ** 2;
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
 
-    return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-  };
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) ** 2;
+
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+};
 
   const loadHotels = async () => {
     try {
@@ -64,15 +75,24 @@ export default function Explore() {
 
       if (userLat && userLng) {
         data = data
-          .map(hotel => {
-            const distance = getDistance(
-              userLat,
-              userLng,
-              hotel.latitude,
-              hotel.longitude
-            );
-            return { ...hotel, distance };
-          })
+  .map(hotel => {
+    const lat = Number(hotel.latitude);
+    const lng = Number(hotel.longitude);
+
+    const distance = getDistance(
+      userLat,
+      userLng,
+      lat,
+      lng
+    );
+
+    return {
+      ...hotel,
+      latitude: lat,
+      longitude: lng,
+      distance
+    };
+  })
           .sort((a, b) => a.distance - b.distance);
       }
 
@@ -93,11 +113,13 @@ export default function Explore() {
 
   const filteredHotels = hotels
     .filter(h => {
-      if (filter === "near") return h.distance <= 2;
-      return true;
+      const filteredHotels = hotels.filter(h =>
+      h.hotelName?.toLowerCase().includes(search.toLowerCase())
+    );
+      return filteredHotels.includes(h);
     })
     .filter(h =>
-      h.hotelName.toLowerCase().includes(search.toLowerCase())
+      h.hotelName?.toLowerCase().includes(search.toLowerCase())
     );
 
   return (
@@ -124,15 +146,11 @@ export default function Explore() {
             />
 
             <div className="flex gap-3 mt-5 overflow-x-auto pb-2">
-              <FilterBtn label="All" active={filter==="all"} onClick={()=>setFilter("all")} />
-              <FilterBtn label="Near Me" active={filter==="near"} onClick={()=>setFilter("near")} />
-
-              <button
-                onClick={() => setView(view === "list" ? "map" : "list")}
-                className="px-5 py-2 rounded-full bg-black text-white text-sm shadow"
-              >
-                {view === "list" ? "Map View" : "List View"}
-              </button>
+              <FilterBtn
+                label="All"
+                active={filter === "all"}
+                onClick={() => setFilter("all")}
+              />
             </div>
 
           </div>
@@ -146,13 +164,18 @@ export default function Explore() {
             </div>
           )}
 
-          {view === "list" && !loading && (
+          {!loading && (
             <div className="grid md:grid-cols-3 gap-10">
 
               {filteredHotels.map((hotel, i) => {
 
                 const rating = (4 + Math.random()).toFixed(1);
                 const time = Math.floor(15 + Math.random() * 20);
+
+                const imageUrl =
+                  hotel.image && hotel.image !== ""
+                    ? `http://localhost:5000/uploads/${hotel.image}`
+                    : "https://source.unsplash.com/400x300/?restaurant,food";
 
                 return (
                   <motion.div
@@ -164,6 +187,7 @@ export default function Explore() {
                     onClick={() => openHotel(hotel)}
                     className="bg-white rounded-3xl shadow-lg cursor-pointer overflow-hidden relative"
                   >
+
                     {/* Safety Badge */}
                     {hotel.verifiedBadge !== "unverified" && (
                       <div className={`absolute top-3 right-3 px-3 py-1 text-xs rounded-full text-white shadow
@@ -183,11 +207,13 @@ export default function Explore() {
 
                     <div className="relative">
                       <img
-                        src={
-                          hotel.image
-                            ? `http://localhost:5000/uploads/${hotel.image}`
-                            : "https://source.unsplash.com/400x300/?food"
-                        }
+                        src={imageUrl}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://source.unsplash.com/400x300/?restaurant,food";
+                        }}
+                        alt={hotel.hotelName}
                         className="h-52 w-full object-cover"
                       />
 
@@ -228,52 +254,7 @@ export default function Explore() {
             </div>
           )}
 
-          {view === "map" && userLat && userLng && (
-            <motion.div
-              initial={{ opacity:0 }}
-              animate={{ opacity:1 }}
-              className="h-[600px] rounded-3xl overflow-hidden shadow-xl"
-            >
-              <MapContainer
-                center={[userLat, userLng]}
-                zoom={13}
-                style={{ height: "100%", width: "100%" }}
-              >
-                <TileLayer
-                  attribution="&copy; OpenStreetMap"
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-
-                <Marker position={[userLat, userLng]}>
-                  <Popup>You are here</Popup>
-                </Marker>
-
-                {filteredHotels.map(hotel => (
-                  <Marker
-                    key={hotel._id}
-                    position={[hotel.latitude, hotel.longitude]}
-                  >
-                    <Popup>
-                      <b>{hotel.hotelName}</b>
-                      <br />
-                      <button
-                        onClick={() => openHotel(hotel)}
-                        style={{
-                          marginTop: "6px",
-                          background: "#f97316",
-                          color: "white",
-                          padding: "6px 12px",
-                          borderRadius: "6px"
-                        }}
-                      >
-                        View Menu
-                      </button>
-                    </Popup>
-                  </Marker>
-                ))}
-              </MapContainer>
-            </motion.div>
-          )}
+          
 
         </div>
       </div>

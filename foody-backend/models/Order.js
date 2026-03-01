@@ -7,6 +7,17 @@ const orderSchema = new mongoose.Schema({
     ref: "Food"
   },
 
+  // ✅ NEW (for proper complaint linking)
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+
+  hotelId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User" // assuming hotel is also in User model
+  },
+
   foodName: String,
   foodImage: String,
   hotelName: String,
@@ -29,6 +40,11 @@ const orderSchema = new mongoose.Schema({
       "delivered"
     ],
     default: "order placed"
+  },
+
+  // ✅ NEW – Track actual delivery time
+  deliveredAt: {
+    type: Date
   },
 
   // 🛵 RIDER INFO (LEVEL 4)
@@ -72,6 +88,12 @@ const orderSchema = new mongoose.Schema({
   hotelFeedback: {
     type: String,
     default: ""
+  },
+
+  // ✅ NEW – Prevent duplicate complaints
+  complaintSubmitted: {
+    type: Boolean,
+    default: false
   },
 
   // 📍 DEMO COORDS (for map animation)

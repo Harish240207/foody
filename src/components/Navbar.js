@@ -93,6 +93,8 @@ export default function Navbar() {
           )}
         </div>
 
+        <a href="/admin-dashboard">Admin</a>
+
         {userPhone && (
           <div className="flex items-center gap-10 font-medium text-gray-700">
 

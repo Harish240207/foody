@@ -22,6 +22,11 @@ import CartPage from "./components/CartPage";
 import HotelMenu from "./pages/HotelMenu";
 import Profile from "./pages/Profile";
 import OrderTracking from "./pages/OrderTracking";
+import AdminComplaints from "./pages/AdminComplaints";
+
+
+
+
 
 
 // ============================================
@@ -219,6 +224,10 @@ function AnimatedRoutes() {
 
           {/* FALLBACK */}
           <Route path="*" element={<Navigate to="/" replace />} />
+
+          <Route path="/admin-complaints" element={<AdminComplaints />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          
 
         </Routes>
       </AnimatePresence>

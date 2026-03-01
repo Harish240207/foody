@@ -13,16 +13,15 @@ const userSchema = new mongoose.Schema({
     unique: true
   },
 
-  // 🟢 NEW — Email Login Support (optional)
+  // 🟢 Email Login Support
   email: {
     type: String,
     unique: true,
-    sparse: true,   // allows multiple null values (important!)
+    sparse: true,
     lowercase: true,
     trim: true
   },
 
-  // 🟢 NEW — Password (only for email users)
   password: {
     type: String
   },
@@ -45,6 +44,34 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     default: "user"
+  },
+
+  role: {
+  type: String,
+  enum: ["user", "admin"],
+  default: "user"
+},
+
+  // 🚨 NEW – Complaint & Strike System (For Hotels Only)
+
+  strikeCount: {
+    type: Number,
+    default: 0
+  },
+
+  totalComplaints: {
+    type: Number,
+    default: 0
+  },
+
+  isBlocked: {
+    type: Boolean,
+    default: false
+  },
+
+  lastStrikeDate: {
+    type: Date,
+    default: null
   },
 
   createdAt: {
