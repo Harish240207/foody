@@ -1,70 +1,199 @@
-# Getting Started with Create React App
+🥗 Foody
+AI-Enabled Surplus Food Redistribution & Safety Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+🚀 A smart national-level platform that connects Restaurants, NGOs, and Volunteers to reduce food wastage and eliminate hunger using technology.
 
-## Available Scripts
+📌 Problem Statement
 
-In the project directory, you can run:
+India faces two major issues simultaneously:
 
-### `npm start`
+🍛 Massive food wastage from hotels & restaurants
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+🥣 Food insecurity among underprivileged communities
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Additionally:
 
-### `npm test`
+No structured redistribution system
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+No transparent tracking
 
-### `npm run build`
+No food safety validation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+No real-time coordination
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+💡 Solution – Foody
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Foody is a full-stack web platform that:
 
-### `npm run eject`
+Connects surplus food donors (Hotels/Restaurants)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Notifies nearby NGOs
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Enables live order tracking
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Ensures food safety validation
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Provides admin monitoring dashboard
 
-## Learn More
+Uses structured database tracking via MongoDB
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+🎯 Key Features
+👤 Multi-Role Authentication
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Hotel Login & Registration
 
-### Code Splitting
+NGO Login
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+User Login
 
-### Analyzing the Bundle Size
+Admin Dashboard
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+🏨 Hotel Dashboard
 
-### Making a Progressive Web App
+Add surplus food
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Manage menu
 
-### Advanced Configuration
+Track orders
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+View pickup status
 
-### Deployment
+🏢 NGO Dashboard
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+View available surplus food
 
-### `npm run build` fails to minify
+Accept donation requests
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Track delivery
+
+🚚 Order Tracking
+
+Real-time tracking system
+
+Delivery status updates
+
+🛡 Admin Panel
+
+Complaint management
+
+Platform monitoring
+
+Dashboard analytics
+
+🗺 Delivery Map Integration
+
+Location-based delivery support
+
+🧠 System Architecture
+
+Frontend (React.js)
+⬇
+Backend (Node.js + Express.js)
+⬇
+Database (MongoDB Atlas)
+
+🛠 Tech Stack
+Layer	Technology Used
+Frontend	React.js
+Backend	Node.js
+API Server	Express.js
+Database	MongoDB Atlas
+Styling	CSS
+Routing	React Router
+HTTP Client	Axios
+📂 Project Structure
+foody/
+│
+├── foody-backend/
+│   ├── server.js
+│   ├── models/
+│   ├── routes/
+│
+├── src/
+│   ├── components/
+│   ├── pages/
+│   ├── App.js
+│
+├── public/
+└── package.json
+⚙️ Installation & Setup
+1️⃣ Clone Repository
+git clone https://github.com/yourusername/foody.git
+cd foody
+2️⃣ Backend Setup
+cd foody-backend
+npm install
+node server.js
+
+Server runs on:
+
+http://localhost:5000
+3️⃣ Frontend Setup
+
+Open new terminal:
+
+npm install
+npm start
+
+Frontend runs on:
+
+http://localhost:3000
+🌍 How It Works
+
+Hotel adds surplus food
+
+NGO sees available listings
+
+NGO accepts request
+
+Delivery tracking begins
+
+Admin monitors the process
+
+🔐 Database
+
+MongoDB Atlas cloud database
+
+Secure connection
+
+Structured collections for:
+
+Users
+
+Hotels
+
+NGOs
+
+Orders
+
+Complaints
+
+📈 Impact
+
+✔ Reduces food wastage
+✔ Supports hunger elimination
+✔ Enables transparency
+✔ Improves coordination
+✔ Digitizes surplus food management
+
+🚀 Future Enhancements
+
+AI-based food safety prediction
+
+Expiry detection using ML
+
+Real-time volunteer GPS tracking
+
+Analytics dashboard with charts
+
+Mobile app integration
+
+👨‍💻 Developed By
+
+Team Name: Team Mavericks
+Project Lead: Harish K
+Hackathon Submission 2026
+
+📜 License
+
+This project is developed for academic and hackathon purposes.
